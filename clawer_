@@ -1,0 +1,31 @@
+import requests
+from bs4 import beautifulSoup
+import re
+from urllib.parse import urljoin
+from urllib.parse import urlparse
+def correcturl(url):
+ return not (re.match("#.*",url) or re.match("^javascript.*",url) or urlparse(url).scheme not in ["http","https"])
+def geturl():
+  url=input()
+  if not correcturl(url):
+    return geturl() 
+  print("success") 
+  return url 
+def getallhref(url):
+  try:
+    res=requests.get(url)
+    soup=beautifulSoup(res)
+    return [x['href'] for x in soup.find_all('a')]    
+  except:
+    print("error")
+    return -1
+
+def clawer():
+  visited=[]
+  waitting=[]
+  url=geturl()
+  getallhref(url)
+
+if __name__== '__main__':
+  clawer();
+
