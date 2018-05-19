@@ -11,32 +11,48 @@ def geturl():
   if not correcturl(url):
     return geturl() 
   return url 
-def getallhref(url):
-  try:
-    res=requests.get(url)
-    soup=BeautifulSoup(res)
-    return [x['href'] for x in soup.find_all('a')]    
-  except:
-    print("error")
-    return -1
+def getallhref(res):
+  soup=BeautifulSoup(res.text)
+  return [x['href'] for x in soup.find_all('a')] 
+def fuc(result,res,tag):
+  soup=BeautifulSoup(res.text)
+  result.append(soup.find_all(tag))
 
 def clawer():
+  #define 
+  exe=""
   visited=[]
   waitting=[]
-  url=geturl()
+  result=[]
   count=0
+  #start  
+  print("start")
+  url=geturl()
+  print("tag:")
+  tag=input()
   waitting.append(url)
   while waitting != [] :
-
-    href=getallhref(waitting[0])
-    print(href)
+    exe=waitting.pop(0)
+    print(exe)
+    try:
+      res=requests.get(exe)
+      print("linked")
+    except:
+      break
+    href=getallhref(res)
+    fuc(result,res,tag)
     if (href):
-     for x in href:
-        if not(x in visited or x in waitting) and re.match("yuntech",x):
-          waitting.append(x)
+      for x in href:
+        if not(x in visited or x in waitting) and re.match("yuntech",x) and correcturl(x):
+          print(1)
+          
+          waitting.append(urljoin(url,x))
           count+=1
+    
       
 
 if __name__== '__main__':
-  print("start")
-  clawer()
+  #clawer()
+  x=input()
+  if not(x in [] or x in []) and re.match("yuntech",x) and correcturl(x):
+      print(1) 
