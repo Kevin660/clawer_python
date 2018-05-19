@@ -24,7 +24,15 @@ def clawer():
   visited=[]
   waitting=[]
   url=geturl()
-  getallhref(url)
+  waitting.append(url)
+  while waitting != [] :
+
+    href=getallhref(waitting[0])
+    if (href):
+     for x in href:
+        if not(x in visited or x in waitting):
+          waitting.append(x)
+  
 
 if __name__== '__main__':
   clawer();
