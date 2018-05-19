@@ -4,12 +4,12 @@ import re
 from urllib.parse import urljoin
 from urllib.parse import urlparse
 def correcturl(url):
- return not (re.match("#.*",url) or re.match("^javascript.*",url) or urlparse(url).scheme not in ["http","https"])
+ return not (re.match("#.*",url or re.match("^javascript.*",url) or urlparse(url).scheme not in ["http","https"]))
 def geturl():
+  print("url:")
   url=input()
   if not correcturl(url):
     return geturl() 
-  print("correct") 
   return url 
 def getallhref(url):
   try:
@@ -29,6 +29,7 @@ def clawer():
   while waitting != [] :
 
     href=getallhref(waitting[0])
+    print(href)
     if (href):
      for x in href:
         if not(x in visited or x in waitting) and re.match("yuntech",x):
@@ -38,5 +39,4 @@ def clawer():
 
 if __name__== '__main__':
   print("start")
-  clawer();
-
+  clawer()
