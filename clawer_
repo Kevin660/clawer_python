@@ -1,5 +1,5 @@
 import requests
-from bs4 import beautifulSoup
+from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin
 from urllib.parse import urlparse
@@ -9,12 +9,12 @@ def geturl():
   url=input()
   if not correcturl(url):
     return geturl() 
-  print("success") 
+  print("correct") 
   return url 
 def getallhref(url):
   try:
     res=requests.get(url)
-    soup=beautifulSoup(res)
+    soup=BeautifulSoup(res)
     return [x['href'] for x in soup.find_all('a')]    
   except:
     print("error")
@@ -24,16 +24,19 @@ def clawer():
   visited=[]
   waitting=[]
   url=geturl()
+  count=0
   waitting.append(url)
   while waitting != [] :
 
     href=getallhref(waitting[0])
     if (href):
      for x in href:
-        if not(x in visited or x in waitting):
+        if not(x in visited or x in waitting) and re.match("yuntech",x):
           waitting.append(x)
-  
+          count+=1
+      
 
 if __name__== '__main__':
+  print("start")
   clawer();
 
